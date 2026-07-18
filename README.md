@@ -15,9 +15,19 @@ A personal AI service that monitors a watched folder for new images, classifies 
 
 ## Current Status
 
-✅ Running in production (monitoring folder since 2026-05-10)
-- No UI yet — logs + album output only
-- Stable operation verified
+The runnable foundation is in place: configuration, logging, and SQLite schema
+initialization. Folder watching, AI classification, and album generation remain
+the next planned work packages.
+
+## Run the foundation
+
+```bash
+mkdir -p watched
+python -m src.main
+```
+
+Configure paths with the `IM_WATCH_DIRECTORY`, `IM_OUTPUT_DIRECTORY`, and
+`IM_DATABASE_PATH` environment variables; see `.env.example`.
 
 ## Architecture
 
