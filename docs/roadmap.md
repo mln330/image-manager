@@ -3,10 +3,10 @@
 ## 1-Week MVP Build Plan
 
 ### Day 1: Foundation
-- [ ] Initialize project structure
-- [ ] Set up SQLite database schema
-- [ ] Basic configuration management
-- [ ] Logging setup
+- [x] Initialize project structure
+- [x] Set up SQLite database schema
+- [x] Basic configuration management
+- [x] Logging setup
 
 ### Day 2: Folder Watching
 - [ ] Implement watchdog observer
@@ -41,8 +41,8 @@
 ### Day 7: Polish
 - [ ] Documentation
 - [ ] Error messages
-- [ ] Configuration validation
-- [ ] Smoke tests
+- [x] Configuration validation
+- [x] Foundation test suite
 
 ---
 

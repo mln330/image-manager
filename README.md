@@ -58,9 +58,13 @@ image-manager/
 ## Roadmap
 
 ### Phase 1: Foundation (Current)
-- Folder watching ✅
-- Basic AI classification ✅
-- Album output (logs + files) ✅
+- [x] Validated configuration
+- [x] Structured logging
+- [x] SQLite schema initialization
+- [x] Automated foundation tests
+- [ ] Folder watching
+- [ ] AI classification
+- [ ] Album generation
 
 ### Phase 2: Enhancements
 - [ ] UI dashboard
