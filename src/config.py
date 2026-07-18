@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import os
 from dataclasses import dataclass
 from pathlib import Path
@@ -32,6 +33,10 @@ class Settings:
         if self.database_path.exists() and self.database_path.is_dir():
             raise ConfigurationError(
                 f"IM_DATABASE_PATH must be a file path: {self.database_path}"
+            )
+        if self.log_level not in logging.getLevelNamesMapping():
+            raise ConfigurationError(
+                f"IM_LOG_LEVEL must be a valid logging level: {self.log_level}"
             )
 
 
