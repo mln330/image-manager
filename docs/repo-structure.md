@@ -1,54 +1,93 @@
 # Repository Structure
 
-The repository currently contains the runnable foundation: configuration,
-logging, and SQLite schema initialization. Folder watching, image
-classification, album generation, and an HTTP API are planned work and are not
-implemented yet.
-
 ```
 image-manager/
-├── README.md                 # Project overview and foundation run instructions
+├── README.md                 # Project overview
 ├── LICENSE                   # MIT License
-├── .env.example              # Environment-variable template
-├── requirements-dev.txt      # Development and test dependencies
 │
-├── docs/                     # Project documentation
-│   ├── architecture.md       # Target architecture
-│   ├── api-spec.md           # Planned API specification
-│   ├── repo-structure.md     # This file
-│   └── roadmap.md            # Implementation roadmap
+├── docs/                     # Documentation
+│   ├── README.md            # This file
+│   ├── architecture.md       # System architecture
+│   ├── api-spec.md          # API specification
+│   └── roadmap.md           # Project roadmap
 │
-├── src/                      # Runnable foundation source
+├── src/                      # Source code
 │   ├── __init__.py
-│   ├── main.py               # Loads settings, configures logging, initializes storage
-│   ├── config.py             # Environment-based settings validation
-│   └── database/
+│   ├── main.py              # Entry point
+│   ├── config.py            # Configuration
+│   │
+│   ├── watcher/             # Folder watching module
+│   │   ├── __init__.py
+│   │   ├── observer.py      # File system observer
+│   │   └── queue.py         # Processing queue
+│   │
+│   ├── classifier/          # AI classification module
+│   │   ├── __init__.py
+│   │   ├── vision.py        # Vision model integration
+│   │   ├── tags.py          # Tag extraction
+│   │   └── category.py      # Category classification
+│   │
+│   ├── album/               # Album generation module
+│   │   ├── __init__.py
+│   │   ├── generator.py     # Album creation
+│   │   ├── grouper.py       # Image grouping logic
+│   │   └── metadata.py      # Album metadata
+│   │
+│   ├── database/            # Data persistence
+│   │   ├── __init__.py
+│   │   ├── schema.py         # Database schema
+│   │   └── queries.py       # Query helpers
+│   │
+│   └── api/                 # HTTP API server
 │       ├── __init__.py
-│       └── schema.py         # SQLite schema initialization
+│       ├── routes.py        # API endpoints
+│       ├── websocket.py     # WebSocket handler
+│       └── middleware.py    # Auth, logging
 │
-└── tests/                    # Foundation test suite
-    ├── __init__.py
-    └── test_foundation.py
+├── tests/                    # Test suite
+│   ├── __init__.py
+│   ├── test_watcher.py
+│   ├── test_classifier.py
+│   ├── test_album.py
+│   └── test_api.py
+│
+├── scripts/                  # Utility scripts
+│   ├── setup.sh             # Initial setup
+│   ├── migrate.py           # Database migrations
+│   └── benchmark.py          # Performance testing
+│
+├── config/
+│   └── default.yaml         # Default configuration
+│
+├── requirements.txt          # Python dependencies
+├── requirements-dev.txt     # Development dependencies
+├── setup.py                 # Package setup
+│
+└── .env.example             # Environment template
 ```
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
-| `src/main.py` | Foundation entry point; configures logging and initializes the output directory and database |
-| `src/config.py` | Loads and validates `IM_*` environment variables |
-| `src/database/schema.py` | Creates the SQLite schema and records its version |
-| `.env.example` | Documents the supported environment variables |
-| `requirements-dev.txt` | Lists development and test dependencies |
+| `src/main.py` | Service entry point, starts all components |
+| `src/config.py` | Loads configuration from env/yaml |
+| `src/watcher/observer.py` | `watchdog` file system observer |
+| `src/classifier/vision.py` | Vision AI API client |
+| `src/album/generator.py` | Album creation logic |
+| `src/database/schema.py` | SQLite schema definition |
 
-There is currently no `requirements.txt` or checked-in YAML configuration.
-Runtime configuration is supplied through environment variables.
-
-## Current Module Dependencies
+## Module Dependencies
 
 ```
 main.py
 ├── config.py
+├── watcher/
+│   └── observer.py
+├── classifier/
+│   └── vision.py
+├── album/
+│   └── generator.py
 └── database/
     └── schema.py
 ```
@@ -56,20 +95,17 @@ main.py
 ## Development Setup
 
 ```bash
-# Clone and set up
+# Clone and setup
 git clone https://github.com/mln330/image-manager.git
 cd image-manager
 python -m venv venv
 source venv/bin/activate
+pip install -r requirements.txt
 pip install -r requirements-dev.txt
 
 # Run tests
 pytest tests/
 
-# Start the runnable foundation (the default watched directory must exist)
-mkdir -p watched
+# Start service
 python -m src.main
 ```
-
-Configure runtime paths with `IM_WATCH_DIRECTORY`, `IM_OUTPUT_DIRECTORY`, and
-`IM_DATABASE_PATH`; see `.env.example` for the full list.
